@@ -7,6 +7,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework.validators import UniqueValidator
 
 from django.contrib.auth import authenticate
+from .models import Profile, EditorProfile
 
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(
@@ -16,13 +17,10 @@ class RegisterSerializer(serializers.ModelSerializer):
     )
     password2 = serializers.CharField(write_only=True, required=True)
     
-    birthday = serializers.DateField(required=True)
-    address = serializers.CharField(required=True)
-    nickname = serializers.CharField(required=True)
-    
     class Meta:
         model = User
-        fields = ('username', "password", "password2", "birthday", "address", "nickname")
+        fields = ('username', "password", "password2")
+        
         
     def validate(self, data):
         if data['password'] != data['password2']:
@@ -33,15 +31,16 @@ class RegisterSerializer(serializers.ModelSerializer):
         return data
     
     def create(self, validated_data):
+        username = validated_data['username']
         
-        user = User.objects.create_user(
-            username=validated_data['username'],
-        )
+        if User.objects.filter(username=username).exists():
+            raise serializers.ValidationError({"username": "이미 존재하는 사용자입니다."})
+        
+        user = User.objects.create_user(username=username)
         user.set_password(validated_data['password'])
         user.save()
-        token, created = Token.objects.get_or_create(user=user)
+        token = Token.objects.create(user=user)
         return user
-
 
 class LoginSerializer(serializers.Serializer):
     username = serializers.CharField(required=True)
@@ -53,17 +52,17 @@ class LoginSerializer(serializers.Serializer):
             token = Token.objects.get(user=user)
             return token
         raise serializers.ValidationError(
-            {"error": "로그인 실패ㅠㅠ 아이디 또는 비밀번호가 틀립니다."}
+            {"error": "로그인 실패! 아이디 또는 비밀번호가 틀립니다."}
         )
         
         
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
-        fields = ('username', 'birthday', 'nickname', 'address')
+        model = Profile
+        fields = ( 'birthday', 'nickname', 'address')
         
 
 class EditorProfileSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
-        fields = ('username', 'name', 'address')
+        model = EditorProfile
+        fields = ( 'name', 'address')
