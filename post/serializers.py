@@ -4,11 +4,12 @@ from .models import Post, Editor_Post, User, Profile, EditorProfile
 
 
 class PostSerializer(serializers.ModelSerializer):
-    nickname = ProfileSerializer(read_only=True)
+    # nickname = ProfileSerializer(read_only=True)
+    # author = ProfileSerializer()
     class Meta:
         model = Post
-        fields = ('published_date', 'like', 'author', 'title', 'content')
-        read_only_fields = ('id', 'published_date', 'like', 'author')
+        fields = ('published_date', 'like', 'title', 'content')
+        read_only_fields = ( 'published_date', 'like')
         
         
 
@@ -19,11 +20,12 @@ class PostCreateSerializer(serializers.ModelSerializer):
         
 
 class EditorPostSerializer(serializers.ModelSerializer):
-    name = EditorProfileSerializer(read_only=True)
+    # name = EditorProfileSerializer(read_only=True)
+    # author = EditorProfileSerializer()
     class Meta:
         model = Editor_Post
-        fields = ('published_date', 'like', 'scarp', 'author', 'title', 'content', 'date', 'recruit_date', 'place', 'phone_number', 'image')
-        read_only_fields = ('id','published_date', 'like', 'scarp', 'name', 'image','author')
+        fields = ('published_date', 'like', 'scarp', 'title', 'content', 'date', 'recruit_date', 'place', 'phone_number', 'image')
+        read_only_fields = ('published_date', 'like', 'scarp', 'image')
 
 
 class EditorPostCreateSerializer(serializers.ModelSerializer):

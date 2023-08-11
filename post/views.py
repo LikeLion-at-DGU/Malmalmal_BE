@@ -17,7 +17,7 @@ class PostViewSet(viewsets.ModelViewSet):
     
     def perform_create(self, serializer):
         profile = Profile.objects.get(user=self.request.user)
-        serializer.save(author=self.request.user, profile=profile)
+        serializer.save(profile=profile)
 
     
         
@@ -33,5 +33,5 @@ class EditorPostViewSet(viewsets.ModelViewSet):
     
     def perform_create(self, serializer):
         editor_profile = EditorProfile.objects.get(user=self.request.user)  
-        serializer.save(author=self.request.user, editor_profile=editor_profile)
+        serializer.save(editor_profile=editor_profile)
         
