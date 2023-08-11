@@ -8,6 +8,14 @@ import os
 
 
 class PostSerializer(serializers.ModelSerializer):
+<<<<<<< HEAD
+    # nickname = ProfileSerializer(read_only=True)
+    # author = ProfileSerializer()
+    class Meta:
+        model = Post
+        fields = ('published_date', 'like', 'title', 'content')
+        read_only_fields = ( 'published_date', 'like')
+=======
     nickname = ProfileSerializer(read_only=True)
     tts_title_message = serializers.CharField(max_length=100, required=False)
     tts_message = serializers.CharField(max_length=1000, required=False)
@@ -20,6 +28,7 @@ class PostSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         tts_title_message = validated_data.pop('tts_title_message', None)  # 수정
         tts_message = validated_data.pop('tts_message', None)
+>>>>>>> 2ee1fcf9e453c0900af0cd023e78d9b53ea05301
         
         # 'writer' 필드를 현재 로그인한 사용자로 설정
         writer = self.context['request'].user
@@ -70,11 +79,12 @@ class PostCreateSerializer(serializers.ModelSerializer):
         
 
 class EditorPostSerializer(serializers.ModelSerializer):
-    name = EditorProfileSerializer(read_only=True)
+    # name = EditorProfileSerializer(read_only=True)
+    # author = EditorProfileSerializer()
     class Meta:
         model = Editor_Post
-        fields = ('published_date', 'like', 'scarp', 'author', 'title', 'content', 'date', 'recruit_date', 'place', 'phone_number', 'image')
-        read_only_fields = ('id','published_date', 'like', 'scarp', 'name', 'image','author')
+        fields = ('published_date', 'like', 'scarp', 'title', 'content', 'date', 'recruit_date', 'place', 'phone_number', 'image')
+        read_only_fields = ('published_date', 'like', 'scarp', 'image')
 
 
 class EditorPostCreateSerializer(serializers.ModelSerializer):

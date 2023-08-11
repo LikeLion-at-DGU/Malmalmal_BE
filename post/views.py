@@ -26,7 +26,7 @@ class PostViewSet(viewsets.ModelViewSet):
     
     def perform_create(self, serializer):
         profile = Profile.objects.get(user=self.request.user)
-        serializer.save(author=self.request.user, profile=profile)
+        serializer.save(profile=profile)
 
     
         
@@ -42,6 +42,10 @@ class EditorPostViewSet(viewsets.ModelViewSet):
     
     def perform_create(self, serializer):
         editor_profile = EditorProfile.objects.get(user=self.request.user)  
+<<<<<<< HEAD
+        serializer.save(editor_profile=editor_profile)
+        
+=======
         serializer.save(author=self.request.user, editor_profile=editor_profile)
 
 
@@ -146,3 +150,4 @@ class PostDetailView(RetrieveAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     permission_classes = [AllowAny]  # 누구나 조회 가능하도록 설정
+>>>>>>> 2ee1fcf9e453c0900af0cd023e78d9b53ea05301
